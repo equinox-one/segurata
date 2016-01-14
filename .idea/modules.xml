@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../baseutil/baseutil.iml" filepath="$PROJECT_DIR$/../baseutil/baseutil.iml" />
+      <module fileurl="file://$PROJECT_DIR$/segurata.iml" filepath="$PROJECT_DIR$/segurata.iml" />
+    </modules>
+  </component>
+</project>

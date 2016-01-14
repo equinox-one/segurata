@@ -1,0 +1,4 @@
+rootProject.name = 'segurata'
+include ':baseutil'
+project(':baseutil').projectDir = new File('/home/mateuyabar/projects/libs/baseutil')
+
