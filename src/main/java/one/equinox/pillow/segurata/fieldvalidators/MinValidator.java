@@ -16,26 +16,29 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-package one.equinox.pillow.segurata;
+package one.equinox.pillow.segurata.fieldvalidators;
 
-import one.equinox.pillow.segurata.IValidator.IValidationError;
-import one.equinox.pillow.segurata.annotations.Max;
+import one.equinox.pillow.segurata.errors.FieldAnnotationError;
+import one.equinox.pillow.segurata.fieldvalidators.common.AbstractFieldValidator;
+import one.equinox.pillow.segurata.fieldvalidators.common.GenericComparator;
+import one.equinox.pillow.segurata.Validator;
+import one.equinox.pillow.segurata.annotations.Min;
 
 import java.lang.reflect.Field;
 
-public class MaxValidator<T> extends AbstractFieldValidator<T, Max> {
+public class MinValidator<T> extends AbstractFieldValidator<T, Min> {
 	GenericComparator comparator = new GenericComparator();
 	
 	@Override
-	public Class<Max> getAnnotationClass() {
-		return Max.class;
+	public Class<Min> getAnnotationClass() {
+		return Min.class;
 	}
 
 	@Override
-	public IValidationError validate(T model, Field field, Max maxAnnotation) throws IllegalAccessException, IllegalArgumentException {
+	public FieldAnnotationError validate(T model, Field field, Min minAnnotation) throws IllegalAccessException, IllegalArgumentException {
 		Object value = field.get(model);
-		if (comparator.compare(value, maxAnnotation.value()) > 0) {
-			return new ValidationError(field, maxAnnotation);
+		if (comparator.compare(value, minAnnotation.value()) < 0) {
+			return new FieldAnnotationError(field, minAnnotation);
 		}
 		return null;
 	}

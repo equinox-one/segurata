@@ -16,22 +16,15 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-package one.equinox.pillow.segurata;
+package one.equinox.pillow.segurata.annotations;
 
-import java.lang.reflect.Field;
-import java.util.List;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-/**
- * http://beanvalidation.org/
- * http://docs.spring.io/spring/docs/current/spring-framework-reference/html/validation.html
- *
- * @param <T>
- */
-public interface IValidator<T> {
-	public List<IValidationError> validate(T model);
-	
-	public interface IValidationError{
-		public Field getField();
-		public Object getError();
-	}
+@Target({ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface MatchesPattern {
+	public String pattern();
 }

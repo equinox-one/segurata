@@ -16,11 +16,14 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-package one.equinox.pillow.segurata;
+package one.equinox.pillow.segurata.fieldvalidators.common;
+
+import one.equinox.pillow.segurata.Validator;
+import one.equinox.pillow.segurata.errors.FieldAnnotationError;
 
 import java.lang.reflect.Field;
 
 public interface IFieldValidator<T> {
-	public IValidator.IValidationError validate(T model, Field field);
+	public FieldAnnotationError validate(T model, Field field);
 
 }

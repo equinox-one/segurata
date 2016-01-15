@@ -18,29 +18,18 @@
 
 package one.equinox.pillow.segurata;
 
-import one.equinox.pillow.segurata.IValidator.IValidationError;
-import one.equinox.pillow.baseutil.exceptions.BreakFastException;
+import one.equinox.pillow.segurata.errors.ValidationError;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.List;
 
-public abstract class AbstractFieldValidator<T, K extends Annotation> implements IFieldValidator<T>{
-	
-	public abstract Class<K> getAnnotationClass();
-	
-	@Override
-	public IValidationError validate(T model, Field field) {
-		try{
-			K annotation = field.getAnnotation(getAnnotationClass());
-			if(annotation!=null){
-				return validate(model, field, annotation);
-			}
-			return null;
-		} catch(Exception e){
-			throw new BreakFastException(e);
-		}
-	}
-
-	public abstract IValidationError validate(T model, Field field, K annotation) throws Exception;
-
+/**
+ * http://beanvalidation.org/
+ * http://docs.spring.io/spring/docs/current/spring-framework-reference/html/validation.html
+ *
+ * @param <T>
+ */
+public interface Validator<T> {
+	public List<ValidationError> validate(T model);
 }

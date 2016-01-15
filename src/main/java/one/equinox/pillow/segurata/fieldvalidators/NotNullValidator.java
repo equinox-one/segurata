@@ -16,8 +16,11 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-package one.equinox.pillow.segurata;
+package one.equinox.pillow.segurata.fieldvalidators;
 
+import one.equinox.pillow.segurata.errors.FieldAnnotationError;
+import one.equinox.pillow.segurata.fieldvalidators.common.AbstractFieldValidator;
+import one.equinox.pillow.segurata.Validator;
 import one.equinox.pillow.segurata.annotations.NotNull;
 
 import java.lang.reflect.Field;
@@ -30,9 +33,9 @@ public class NotNullValidator<T> extends AbstractFieldValidator<T, NotNull> {
 	}
 
 	@Override
-	public IValidator.IValidationError validate(T model, Field field, NotNull notNull) throws IllegalAccessException, IllegalArgumentException {
+	public FieldAnnotationError validate(T model, Field field, NotNull notNull) throws IllegalAccessException, IllegalArgumentException {
 		if (field.get(model) == null) {
-			return new ValidationError(field, notNull);
+			return new FieldAnnotationError(field, notNull);
 		}
 		return null;
 

@@ -19,12 +19,15 @@
 package one.equinox.pillow.segurata;
 
 import one.equinox.pillow.baseutil.reflection.ReflectionUtil;
+import one.equinox.pillow.segurata.errors.ValidationError;
+import one.equinox.pillow.segurata.fieldvalidators.*;
+import one.equinox.pillow.segurata.fieldvalidators.common.GenericComparator;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DefaultValidator<T> implements IValidator<T>{
+public class ModelValidator<T> implements Validator<T> {
 	Class<T> modelClass;
 	GenericComparator comparator = new GenericComparator();
 	
@@ -33,34 +36,35 @@ public class DefaultValidator<T> implements IValidator<T>{
 	NotEmptyValidator<T> notEmptyValidator = new NotEmptyValidator<T>();
 	MaxValidator<T> maxValidator = new MaxValidator<T>();
 	MinValidator<T> minValidator = new MinValidator<T>();
+    PatternValidator<T> patternValidator = new PatternValidator<T>();
 	
 	
-	public DefaultValidator(Class<T> modelClass) {
+	public ModelValidator(Class<T> modelClass) {
 		this.modelClass = modelClass;
 	}
 
 	@Override
-	public List<IValidationError> validate(T model) {
-        List<IValidationError> errors = new ArrayList<IValidationError>();
+	public List<ValidationError> validate(T model) {
+        List<ValidationError> errors = new ArrayList<ValidationError>();
         for(Field field : ReflectionUtil.getStoredFields(modelClass)){
             field.setAccessible(true);
 
             //NotNull validation
-            IValidationError notNullError = notNullValidator.validate(model, field);
+            ValidationError notNullError = notNullValidator.validate(model, field);
             if(notNullError!=null){
                 errors.add(notNullError);
                 continue;
             }
 
             //NotEmpty validation
-            IValidationError notEmptyError = notEmptyValidator.validate(model, field);
+            ValidationError notEmptyError = notEmptyValidator.validate(model, field);
             if(notEmptyError!=null){
                 errors.add(notEmptyError);
                 continue;
             }
 
             //Max validation
-            IValidationError error = maxValidator.validate(model, field);
+            ValidationError error = maxValidator.validate(model, field);
             addIfNotNull(errors, error);
 
             //Min validation
@@ -69,6 +73,9 @@ public class DefaultValidator<T> implements IValidator<T>{
 
             //GreaterThan validation
             error = greaterThanValidator.validate(model, field);
+            addIfNotNull(errors,error);
+
+            error = patternValidator.validate(model, field);
             addIfNotNull(errors,error);
         }
         return errors;

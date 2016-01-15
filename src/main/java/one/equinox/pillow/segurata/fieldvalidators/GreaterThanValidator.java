@@ -16,8 +16,12 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-package one.equinox.pillow.segurata;
+package one.equinox.pillow.segurata.fieldvalidators;
 
+import one.equinox.pillow.segurata.errors.FieldAnnotationError;
+import one.equinox.pillow.segurata.fieldvalidators.common.AbstractFieldValidator;
+import one.equinox.pillow.segurata.fieldvalidators.common.GenericComparator;
+import one.equinox.pillow.segurata.Validator;
 import one.equinox.pillow.segurata.annotations.GreaterThan;
 
 import java.lang.reflect.Field;
@@ -31,7 +35,7 @@ public class GreaterThanValidator<T> extends AbstractFieldValidator<T, GreaterTh
 	}
 
 	@Override
-	public IValidator.IValidationError validate(T model, Field field, GreaterThan greatterAnnotation) throws IllegalAccessException, IllegalArgumentException, NoSuchFieldException {
+	public FieldAnnotationError validate(T model, Field field, GreaterThan greatterAnnotation) throws IllegalAccessException, IllegalArgumentException, NoSuchFieldException {
 		Class<T> modelClass = (Class<T>) model.getClass();
 
 		Object value = field.get(model);
@@ -40,7 +44,7 @@ public class GreaterThanValidator<T> extends AbstractFieldValidator<T, GreaterTh
 		compareField.setAccessible(true);
 		Object compareValue = compareField.get(model);
 		if(!isValid(value, compareValue, greatterAnnotation)){
-			return new ValidationError(field, greatterAnnotation);
+			return new FieldAnnotationError(field, greatterAnnotation);
 		}
 		return null;
 	}

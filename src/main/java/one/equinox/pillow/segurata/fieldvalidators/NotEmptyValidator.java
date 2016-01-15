@@ -16,9 +16,10 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-package one.equinox.pillow.segurata;
+package one.equinox.pillow.segurata.fieldvalidators;
 
-import one.equinox.pillow.segurata.IValidator.IValidationError;
+import one.equinox.pillow.segurata.errors.FieldAnnotationError;
+import one.equinox.pillow.segurata.fieldvalidators.common.AbstractFieldValidator;
 import one.equinox.pillow.segurata.annotations.NotEmpty;
 import one.equinox.pillow.baseutil.exceptions.UnimplementedException;
 
@@ -32,21 +33,23 @@ public class NotEmptyValidator<T> extends AbstractFieldValidator<T, NotEmpty> {
 	}
 	
 	@Override
-	public IValidationError validate(T model, Field field, NotEmpty notEmpty) throws IllegalAccessException, IllegalArgumentException {
+	public FieldAnnotationError validate(T model, Field field, NotEmpty notEmpty) throws IllegalAccessException, IllegalArgumentException {
 
 		boolean notEmptyError = false;
 		Object value = field.get(model);
-		if (value instanceof Collection<?>) {
+		if(value == null) {
+			notEmptyError = true;
+		} else if (value instanceof Collection<?>) {
 			Collection<?> collection = (Collection<?>) value;
-			notEmptyError = (collection == null || collection.isEmpty());
+			notEmptyError = collection.isEmpty();
 		} else if (value instanceof String) {
 			String string = (String) value;
-			notEmptyError = string == null || string.length() == 0;
+			notEmptyError = string.length() == 0;
 		} else {
 			throw new UnimplementedException();
 		}
 		if (notEmptyError) {
-			return new ValidationError(field, notEmpty);
+			return new FieldAnnotationError(field, notEmpty);
 		}
 
 		return null;

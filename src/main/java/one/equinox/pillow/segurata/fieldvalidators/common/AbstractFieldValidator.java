@@ -16,27 +16,31 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-package one.equinox.pillow.segurata;
+package one.equinox.pillow.segurata.fieldvalidators.common;
 
-import one.equinox.pillow.segurata.annotations.Min;
+import one.equinox.pillow.baseutil.exceptions.BreakFastException;
+import one.equinox.pillow.segurata.errors.FieldAnnotationError;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
-public class MinValidator<T> extends AbstractFieldValidator<T, Min> {
-	GenericComparator comparator = new GenericComparator();
+public abstract class AbstractFieldValidator<T, K extends Annotation> implements IFieldValidator<T> {
+	
+	public abstract Class<K> getAnnotationClass();
 	
 	@Override
-	public Class<Min> getAnnotationClass() {
-		return Min.class;
+	public FieldAnnotationError validate(T model, Field field) {
+		try{
+			K annotation = field.getAnnotation(getAnnotationClass());
+			if(annotation!=null){
+				return validate(model, field, annotation);
+			}
+			return null;
+		} catch(Exception e){
+			throw new BreakFastException(e);
+		}
 	}
 
-	@Override
-	public IValidator.IValidationError validate(T model, Field field, Min minAnnotation) throws IllegalAccessException, IllegalArgumentException {
-		Object value = field.get(model);
-		if (comparator.compare(value, minAnnotation.value()) < 0) {
-			return new ValidationError(field, minAnnotation);
-		}
-		return null;
-	}
+	public abstract FieldAnnotationError validate(T model, Field field, K annotation) throws Exception;
 
 }

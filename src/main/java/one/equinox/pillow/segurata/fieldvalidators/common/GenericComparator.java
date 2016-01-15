@@ -16,7 +16,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-package one.equinox.pillow.segurata;
+package one.equinox.pillow.segurata.fieldvalidators.common;
 
 
 import one.equinox.pillow.baseutil.exceptions.UnimplementedException;
