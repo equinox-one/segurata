@@ -18,8 +18,6 @@ public class SampleModel {
         @NotEmpty List<String> notEmptyList;
         @Max(10) int max10;
         @Min(10) int min10;
-        //@GreaterThan(attribute= "max10") int greaterThanMax10;
-        //@GreaterThan(attribute= "max10", acceptEqual= true) int greaterOrEqualThanMax10;
         @GreaterThan(attribute=MAX10) int greaterThanMax10;
         @GreaterThan(attribute=MAX10, acceptEqual=true) int greaterOrEqualThanMax10;
         @MatchesPattern(pattern = "A.*B") String matchesPattern;

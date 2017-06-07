@@ -75,6 +75,7 @@ public class ModelValidator<T> implements Validator<T> {
             error = greaterThanValidator.validate(model, field);
             addIfNotNull(errors,error);
 
+            //pattern validator
             error = patternValidator.validate(model, field);
             addIfNotNull(errors,error);
         }

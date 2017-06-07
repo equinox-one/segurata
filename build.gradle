@@ -1,5 +1,5 @@
 group 'one.equinox.pillow'
-version '0.0.1'
+version '0.0.2'
 
 apply plugin: 'java'
 apply plugin: 'com.novoda.bintray-release'
@@ -11,7 +11,7 @@ publish {
     userOrg = 'equinox-one'
     groupId = 'one.equinox.pillow'
     artifactId = 'segurata'
-    publishVersion = '0.0.1'
+    publishVersion = '0.0.4'
     desc = 'Validation utitlity'
     website = 'https://github.com/equinox-one/pillow-segurata'
 }

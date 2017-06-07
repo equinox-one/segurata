@@ -1,11 +1,11 @@
 package one.equinox.pillow.segurata;
 
 
-import one.equinox.pillow.segurata.errors.ValidationError;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import one.equinox.pillow.segurata.errors.ValidationError;
 
 /**
  * Generic validator.
@@ -36,5 +36,11 @@ public class Segurata implements Validator<Object> {
         } else {
             return new ModelValidator(model.getClass()).validate(model);
         }
+    }
+
+    public void validateAndThrow(Object model) throws ValidationErrorException{
+        List<ValidationError> errors = validate(model);
+        if(!errors.isEmpty())
+            throw new ValidationErrorException(errors);
     }
 }
